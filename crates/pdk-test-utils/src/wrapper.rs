@@ -58,10 +58,13 @@ impl WasmTestWrapper {
     pub fn load_versions(&self, mut input: LoadVersionsInput) -> LoadVersionsOutput {
         input.context = self.prepare_context(input.context);
 
-        self.tool
-            .plugin
-            .call_func_with("load_versions", input)
-            .unwrap()
+        match self.tool.plugin.call_func_with("load_versions", input) {
+            Ok(output) => output,
+            Err(e) => {
+                println!("!!! `load_versions` error: {}", e);
+                return LoadVersionsOutput::default();
+            }
+        }
     }
 
     pub fn locate_bins(&self, mut input: LocateBinsInput) -> LocateBinsOutput {
@@ -151,10 +154,13 @@ impl WasmTestWrapper {
     pub fn resolve_version(&self, mut input: ResolveVersionInput) -> ResolveVersionOutput {
         input.context = self.prepare_context(input.context);
 
-        self.tool
-            .plugin
-            .call_func_with("resolve_version", input)
-            .unwrap()
+        match self.tool.plugin.call_func_with("resolve_version", input) {
+            Ok(output) => output,
+            Err(e) => {
+                println!("!!! `resolve_version` error: {}", e);
+                return ResolveVersionOutput::default();
+            }
+        }
     }
 
     pub fn sync_manifest(&self, mut input: SyncManifestInput) -> SyncManifestOutput {
